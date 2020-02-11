@@ -196,18 +196,21 @@
 				{
 					TwoBall = false;
 					SpeedUp = false;
+					speed = -10; // speed reset
 					newGame();
 				}
 				function onSpeedUpClick(event:MouseEvent):void
 				{
 					SpeedUp = true;
 					TwoBall = false;
+					speed = -10; // speed reset
 					newGame();
 				}
 				function onTwoBallClick(event:MouseEvent):void
 				{
 					TwoBall = true;
 					SpeedUp = false;
+					speed = -10; // speed reset
 					newGame();
 				}
 				
@@ -356,7 +359,7 @@
 			
 			if (TwoBall == true)
 		    {
-			    if (ballTwo.x < 0)
+			    if (ballTwo.x > 550)
 				{
 				    playerscore += +1
 				    backgrnd.PlayerScore.text = String(playerscore);
@@ -382,7 +385,7 @@
 			
 			if (TwoBall == true)
 			{
-				if (ballTwo.x > 550) // AI Score
+				if (ballTwo.x < 0) // AI Score
 			    {
 				    aiscore += +1
 				    backgrnd.AIScore.text = String(aiscore);
