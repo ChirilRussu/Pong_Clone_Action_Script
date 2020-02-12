@@ -14,14 +14,14 @@
 	public class Main extends MovieClip 
 	{
 		//changeable variables
-		var speed:int = -10;         // ball speed
-		var controlspeed:int = 10;  // player and ai movement speed
-		var speedup:int = 1;         // SpeedUp speed 
+		var ball_speed:int = -10;    			// ball speed
+		var paddle_speed:int = 10;  			// player and ai movement speed
+		var ball_speed_icrease:int = 3;         // SpeedUp speed 
 		
 		//objects
 		var backgrnd:Backgrnd;
-		var player:Player;
-		var ai:AI;
+		var left_paddle:Left_Paddle;
+		var right_paddle:Right_Paddle;
 		var ball:Ball;
 		var gameMenu:GameMenu;
 		var ballTwo:Ball;
@@ -42,7 +42,7 @@
 		var SpeedUp:Boolean;
 		var TwoBall:Boolean;
 		
-		//sound:
+		//sounds
 		//music
 		var mySound:Sound = new Sound();
 		var myChannel:SoundChannel = new SoundChannel();
@@ -111,11 +111,11 @@
 			    gameMenu.redBall.x = ball.x
 			    gameMenu.redBall.y = ball.y
 				gameMenu.redPlayer.visible = true
-			    gameMenu.redPlayer.x = player.x
-			    gameMenu.redPlayer.y = player.y
+			    gameMenu.redPlayer.x = left_paddle.x
+			    gameMenu.redPlayer.y = left_paddle.y
 				gameMenu.redAI.visible = true
-			    gameMenu.redAI.x = ai.x
-			    gameMenu.redAI.y = ai.y
+			    gameMenu.redAI.x = right_paddle.x
+			    gameMenu.redAI.y = right_paddle.y
 				if (TwoBall == true)
 				{
 					gameMenu.redBallTwo.x = ballTwo.x
@@ -196,24 +196,24 @@
 				{
 					TwoBall = false;
 					SpeedUp = false;
-					speed = -10; // speed reset
+					ball_speed = -10; // speed reset
 					newGame();
 				}
 				function onSpeedUpClick(event:MouseEvent):void
 				{
 					SpeedUp = true;
 					TwoBall = false;
-					speed = -10; // speed reset
+					ball_speed = -10; // speed reset
 					newGame();
 				}
 				function onTwoBallClick(event:MouseEvent):void
 				{
 					TwoBall = true;
 					SpeedUp = false;
-					speed = -10; // speed reset
+					ball_speed = -10; // speed reset
 					newGame();
 				}
-				
+
 		function onOptionsButtonClick(event:MouseEvent):void   //OPTIONS
 		{
 			if(gameMenu.optionsMenu.visible == false)
@@ -283,15 +283,15 @@
 			backgrnd.x = 0;
 			backgrnd.y = 0;
 			
-			player = new Player;
-			addChild(player);
-			player.x = 20;
-			player.y = 200;
+			left_paddle = new Left_Paddle;
+			addChild(left_paddle);
+			left_paddle.x = 20;
+			left_paddle.y = 200;
 			
-			ai = new AI;
-			addChild(ai);
-			ai.x = 530;
-			ai.y = 200;
+			right_paddle = new Right_Paddle;
+			addChild(right_paddle);
+			right_paddle.x = 530;
+			right_paddle.y = 200;
 			
 			ball = new Ball;
 			addChild(ball);
@@ -332,18 +332,15 @@
 				stage.focus = backgrnd.PlayerScore;
 			}
 			
-			ball.x = ball.x + Math.cos(rads) * speed; 
-			ball.y = ball.y + Math.sin(rads) * speed;
+			ball.x = ball.x + Math.cos(rads) * ball_speed; 
+			ball.y = ball.y + Math.sin(rads) * ball_speed;
 			
 			if (TwoBall == true)
 			{
-				ballTwo.x = ballTwo.x + Math.cos(radsTwo) * speed; 
-			    ballTwo.y = ballTwo.y + Math.sin(radsTwo) * speed;
+				ballTwo.x = ballTwo.x + Math.cos(radsTwo) * ball_speed; 
+			    ballTwo.y = ballTwo.y + Math.sin(radsTwo) * ball_speed;
 			}
 				
-			//TEST
-			/*player.y = ball.y;
-			ai.y = ball.y;*/
 			
 			if (ball.x > 550) // AI Score
 			{
@@ -410,7 +407,7 @@
 			}
 			
 			//bounce from racket
-			if (player.hitTestObject(ball) && hitHappens == false )
+			if (left_paddle.hitTestObject(ball) && hitHappens == false )
 			{
 				angleX = 360 - angle;
 				angle = 180 + angleX;
@@ -423,12 +420,12 @@
 				}
 				if (SpeedUp == true)
 				{
-					speed = speed - speedup;
+					ball_speed = ball_speed - ball_speed_icrease;
 				}
 			}
 			if (TwoBall == true)
 			{
-			    if (player.hitTestObject(ballTwo) && hitHappensTwo == false )
+			    if (left_paddle.hitTestObject(ballTwo) && hitHappensTwo == false )
 			    {
 				    angleXTwo = 360 - angleTwo;
 				    angleTwo = 180 + angleXTwo;
@@ -441,11 +438,11 @@
 				    }
 				    if (SpeedUp == true)
 				    {
-					    speed = speed - speedup;
+					    ball_speed = ball_speed - ball_speed_icrease;
 				    }
 			    }
 			}
-			if (ai.hitTestObject(ball) && hitHappens == false )
+			if (right_paddle.hitTestObject(ball) && hitHappens == false )
 			{
 				angleX = 180 - angle;
 				angle = 0 + angleX;
@@ -458,12 +455,12 @@
 				}
 				if (SpeedUp == true)
 				{
-					speed = speed - speedup;
-				}				
+					ball_speed = ball_speed - ball_speed_icrease;
+				}
 			}
 			if (TwoBall == true)
 			{
-			    if (ai.hitTestObject(ballTwo) && hitHappensTwo == false )
+			    if (right_paddle.hitTestObject(ballTwo) && hitHappensTwo == false )
 			    {
 				    angleXTwo = 180 - angleTwo;
 				    angleTwo = 0 + angleXTwo;
@@ -476,7 +473,7 @@
 				    }
 				    if (SpeedUp == true)
 				    {
-					    speed = speed - speedup;
+					    ball_speed = ball_speed - ball_speed_icrease;
 				    }				
 			    }
 			}
@@ -517,28 +514,28 @@
 			    }
 			}
 			
-			player.y += controlspeedP;
-		    ai.y += controlspeedA;
+			left_paddle.y += controlspeedP;
+		    right_paddle.y += controlspeedA;
 			
 				//top border
-				if (player.y < 20)
+				if (left_paddle.y < 20)
 				{
-					player.y = 20;
+					left_paddle.y = 20;
 				}
 				//bottom border
-				if (player.y > 380)
+				if (left_paddle.y > 380)
 				{
-					player.y = 380;
+					left_paddle.y = 380;
 				}
 				//top border
-				if (ai.y < 20)
+				if (right_paddle.y < 20)
 				{
-					ai.y = 20;
+					right_paddle.y = 20;
 				}
 				//bottom border
-				if (ai.y > 380)
+				if (right_paddle.y > 380)
 				{
-					ai.y = 380;
+					right_paddle.y = 380;
 				}
 		}
 		function onKeyPressUp(event:KeyboardEvent):void 
@@ -564,23 +561,23 @@
 		{
 			if(event.keyCode == Keyboard.W) //player moves up
 			{
-				controlspeedP = -controlspeed;
-				//player.y += -controlspeed
+				controlspeedP = -paddle_speed;
+				//left_paddle.y += -paddle_speed
 			}
 			if(event.keyCode == Keyboard.S) //player moves down
 			{
-				controlspeedP = controlspeed;
-				//player.y += +controlspeed
+				controlspeedP = paddle_speed;
+				//left_paddle.y += +paddle_speed
 			}
 			if(event.keyCode == Keyboard.UP) //player moves up
 			{
-				controlspeedA = -controlspeed;
-				//ai.y += -controlspeed
+				controlspeedA = -paddle_speed;
+				//right_paddle.y += -paddle_speed
 			}
 			if(event.keyCode == Keyboard.DOWN) //player moves down
 			{
-				controlspeedA = controlspeed;
-				//ai.y += +controlspeed
+				controlspeedA = paddle_speed;
+				//right_paddle.y += +paddle_speed
 			}
 			if(event.keyCode == Keyboard.ESCAPE)
 			{			
@@ -625,7 +622,7 @@
 			
 			if (SpeedUp == true)
 			{
-				speed = -10
+				ball_speed = -10
 			}
 		}
 		function aiScoredTwo():void
@@ -650,7 +647,7 @@
 			 
 			 if (SpeedUp == true)
 			 {
-				 speed = -10
+				 ball_speed = -10
 			 }
 		}
 		function playerScored():void //ball reset from Player to AI     //Q 1 & 4 (BR & TR)
@@ -672,7 +669,7 @@
 			
 			if (SpeedUp == true)
 			{
-				speed = -10
+				ball_speed = -10
 			}
 		}
 		function playerScoredTwo():void
@@ -696,7 +693,7 @@
 				
 				if (SpeedUp == true)
 			    {
-				    speed = -10
+				    ball_speed = -10
 			    }
 			}
 		}
