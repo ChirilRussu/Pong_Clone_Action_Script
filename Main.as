@@ -14,33 +14,33 @@
 	public class Main extends MovieClip 
 	{
 		//changeable variables
-		var ball_speed:int = -10;    			// ball speed
-		var paddle_speed:int = 10;  			// player and ai movement speed
-		var ball_speed_icrease:int = 3;         // SpeedUp speed 
+		var ball_speed:int = -10;
+		var paddle_speed:int = 10;
+		var ball_speed_icrease:int = 3;
 		
 		//objects
-		var backgrnd:Backgrnd;
-		var left_paddle:Left_Paddle;
-		var right_paddle:Right_Paddle;
-		var ball:Ball;
-		var gameMenu:GameMenu;
+		var background_stage:Background_Stage;
+		var game_menu:Game_Menu;
+		var left_paddle:Paddle;
+		var right_paddle:Paddle;
+		var ball_one:Ball;
 		var ballTwo:Ball;
 		
 		//storing variables
-		var playerscore:int = 0;
-		var aiscore:int = 0;
-		var controlspeedP:int = 0;
-		var controlspeedA:int = 0;
-		var angle:int;
-		var angleTwo:int;
-		var rads:Number;
-		var radsTwo:Number;
-		var hitHappens:Boolean;
-		var hitHappensTwo:Boolean;
-		var GameStarted:Boolean;
-		var InMenu:Boolean;
-		var SpeedUp:Boolean;
-		var TwoBall:Boolean;
+		var left_score:int = 0;
+		var right_score:int = 0;
+		var paddle_movement_left:int = 0; 		// used to store and overwrite paddle_speed without losing its value
+		var paddle_movement_right:int = 0;
+		var first_ball_angle:int;				
+		var second_ball_angle:int;
+		var rads:Number;                    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		var radsTwo:Number;					////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		var first_ball_hit:Boolean;				// hit detection flags
+		var second_ball_hit:Boolean;
+		var game_start:Boolean;
+		var in_menu:Boolean;
+		var soeed_up_mode:Boolean;
+		var two_ball_mode:Boolean;
 		
 		//sounds
 		//music
@@ -64,67 +64,67 @@
 		
 		function menu():void //Menu Call
 		{			
-			gameMenu = new GameMenu;
-			addChild(gameMenu);
-			gameMenu.x = 0;
-			gameMenu.y = 0;
+			game_menu = new Game_Menu;
+			addChild(game_menu);
+			game_menu.x = 0;
+			game_menu.y = 0;
 			
-			gameMenu.resumeButton.addEventListener(MouseEvent.CLICK,onResumeButtonClick);
-			gameMenu.newGameButton.addEventListener(MouseEvent.CLICK,onNewGameButtonClick);
-			gameMenu.optionsButton.addEventListener(MouseEvent.CLICK,onOptionsButtonClick);
-			gameMenu.highScoresButton.addEventListener(MouseEvent.CLICK,onHighScoresButtonClick);
-			gameMenu.infoButton.addEventListener(MouseEvent.CLICK,onInfoButtonClick);
-			gameMenu.exitButton.addEventListener(MouseEvent.CLICK,onExitButtonClick);
-			gameMenu.optionsMenu.firstCheckBox.addEventListener(MouseEvent.CLICK,onMusicChckBoxClick);
-			gameMenu.optionsMenu.secondCheckBox.addEventListener(MouseEvent.CLICK,onSoundsChckBoxClick);
+			game_menu.resumeButton.addEventListener(MouseEvent.CLICK,onResumeButtonClick);
+			game_menu.newGameButton.addEventListener(MouseEvent.CLICK,onNewGameButtonClick);
+			game_menu.optionsButton.addEventListener(MouseEvent.CLICK,onOptionsButtonClick);
+			game_menu.highScoresButton.addEventListener(MouseEvent.CLICK,onHighScoresButtonClick);
+			game_menu.infoButton.addEventListener(MouseEvent.CLICK,onInfoButtonClick);
+			game_menu.exitButton.addEventListener(MouseEvent.CLICK,onExitButtonClick);
+			game_menu.optionsMenu.firstCheckBox.addEventListener(MouseEvent.CLICK,onMusicChckBoxClick);
+			game_menu.optionsMenu.secondCheckBox.addEventListener(MouseEvent.CLICK,onSoundsChckBoxClick);
 			
-			gameMenu.optionsMenu.visible = false;
-			gameMenu.onePlayer.visible = false;
-			gameMenu.twoPlayers.visible = false;
-			gameMenu.normal.visible = false;
-			gameMenu.speedUp.visible = false;
-			gameMenu.twoBall.visible = false;
+			game_menu.optionsMenu.visible = false;
+			game_menu.onePlayer.visible = false;
+			game_menu.twoPlayers.visible = false;
+			game_menu.normal.visible = false;
+			game_menu.speedUp.visible = false;
+			game_menu.twoBall.visible = false;
 			
 			if (musicOn == true)
 			{
-				gameMenu.optionsMenu.firstCheckBox.gotoAndStop("StateV");
+				game_menu.optionsMenu.firstCheckBox.gotoAndStop("StateV");
 			}
 			else
 			{
-				gameMenu.optionsMenu.firstCheckBox.gotoAndStop("StateX");
+				game_menu.optionsMenu.firstCheckBox.gotoAndStop("StateX");
 			}
 			if (soundsOn == true)
 			{
-				gameMenu.optionsMenu.secondCheckBox.gotoAndStop("StateV");
+				game_menu.optionsMenu.secondCheckBox.gotoAndStop("StateV");
 			}
 			else
 			{
-				gameMenu.optionsMenu.secondCheckBox.gotoAndStop("StateX");
+				game_menu.optionsMenu.secondCheckBox.gotoAndStop("StateX");
 			}
 			
-			gameMenu.redBall.visible = false;
-			gameMenu.redPlayer.visible = false;
-			gameMenu.redAI.visible = false;
-			if (GameStarted == true)
+			game_menu.redBall.visible = false;
+			game_menu.redPlayer.visible = false;
+			game_menu.redAI.visible = false;
+			if (game_start == true)
 			{
-				gameMenu.redBall.visible = true
-			    gameMenu.redBall.x = ball.x
-			    gameMenu.redBall.y = ball.y
-				gameMenu.redPlayer.visible = true
-			    gameMenu.redPlayer.x = left_paddle.x
-			    gameMenu.redPlayer.y = left_paddle.y
-				gameMenu.redAI.visible = true
-			    gameMenu.redAI.x = right_paddle.x
-			    gameMenu.redAI.y = right_paddle.y
-				if (TwoBall == true)
+				game_menu.redBall.visible = true
+			    game_menu.redBall.x = ball_one.x
+			    game_menu.redBall.y = ball_one.y
+				game_menu.redPlayer.visible = true
+			    game_menu.redPlayer.x = left_paddle.x
+			    game_menu.redPlayer.y = left_paddle.y
+				game_menu.redAI.visible = true
+			    game_menu.redAI.x = right_paddle.x
+			    game_menu.redAI.y = right_paddle.y
+				if (two_ball_mode == true)
 				{
-					gameMenu.redBallTwo.x = ballTwo.x
-				    gameMenu.redBallTwo.y = ballTwo.y
+					game_menu.redBallTwo.x = ballTwo.x
+				    game_menu.redBallTwo.y = ballTwo.y
 				}
 				else
 				{
-					gameMenu.redBallTwo.x = - 20
-				    gameMenu.redBallTwo.y = - 20
+					game_menu.redBallTwo.x = - 20
+				    game_menu.redBallTwo.y = - 20
 				}
 			}
 			if (musicOn == true)
@@ -136,13 +136,13 @@
 		
 		function onResumeButtonClick(event:MouseEvent):void  //RESUME
 		{
-			if (GameStarted == true)
+			if (game_start == true)
 			{
-				removeChild(gameMenu)
+				removeChild(game_menu)
 				
 				addEventListener(Event.ENTER_FRAME, frame);
 				stage.focus = this;
-				InMenu = false;
+				in_menu = false;
 				
 				if (musicOn == true)
 			    {
@@ -152,23 +152,23 @@
 		}
 		function onNewGameButtonClick(event:MouseEvent):void   //NEWGAME
 		{
-			if(gameMenu.onePlayer.visible == false)
+			if(game_menu.onePlayer.visible == false)
 			{
-				gameMenu.onePlayer.visible = true;
-				gameMenu.twoPlayers.visible = true;
-				gameMenu.optionsMenu.visible = false;
+				game_menu.onePlayer.visible = true;
+				game_menu.twoPlayers.visible = true;
+				game_menu.optionsMenu.visible = false;
 			}
 			else
 			{
-				gameMenu.onePlayer.visible = false;
-				gameMenu.twoPlayers.visible = false;
+				game_menu.onePlayer.visible = false;
+				game_menu.twoPlayers.visible = false;
 				
-				gameMenu.normal.visible = false;      
-			    gameMenu.speedUp.visible = false;
-			    gameMenu.twoBall.visible = false;
+				game_menu.normal.visible = false;      
+			    game_menu.speedUp.visible = false;
+			    game_menu.twoBall.visible = false;
 			}
-			gameMenu.onePlayer.addEventListener(MouseEvent.CLICK,onOneplayerClick);
-			gameMenu.twoPlayers.addEventListener(MouseEvent.CLICK,onTwoplayersClick);
+			game_menu.onePlayer.addEventListener(MouseEvent.CLICK,onOneplayerClick);
+			game_menu.twoPlayers.addEventListener(MouseEvent.CLICK,onTwoplayersClick);
 		}
 		    function onOneplayerClick(event:MouseEvent):void
 		    {
@@ -176,74 +176,74 @@
 		    }
 		    function onTwoplayersClick(event:MouseEvent):void
 		    {
-                if (gameMenu.normal.visible == false)
+                if (game_menu.normal.visible == false)
 				{
-					gameMenu.normal.visible = true;
-			        gameMenu.speedUp.visible = true;
-			        gameMenu.twoBall.visible = true;
+					game_menu.normal.visible = true;
+			        game_menu.speedUp.visible = true;
+			        game_menu.twoBall.visible = true;
 				}
 				else
 				{
-					gameMenu.normal.visible = false;
-			        gameMenu.speedUp.visible = false;
-			        gameMenu.twoBall.visible = false;					
+					game_menu.normal.visible = false;
+			        game_menu.speedUp.visible = false;
+			        game_menu.twoBall.visible = false;					
 				}
-				gameMenu.normal.addEventListener(MouseEvent.CLICK,onNormalClick);
-				gameMenu.speedUp.addEventListener(MouseEvent.CLICK,onSpeedUpClick);
-				gameMenu.twoBall.addEventListener(MouseEvent.CLICK,onTwoBallClick);
+				game_menu.normal.addEventListener(MouseEvent.CLICK,onNormalClick);
+				game_menu.speedUp.addEventListener(MouseEvent.CLICK,onSpeedUpClick);
+				game_menu.twoBall.addEventListener(MouseEvent.CLICK,onTwoBallClick);
 		    }		
 			    function onNormalClick(event:MouseEvent):void
 				{
-					TwoBall = false;
-					SpeedUp = false;
+					two_ball_mode = false;
+					soeed_up_mode = false;
 					ball_speed = -10; // speed reset
 					newGame();
 				}
 				function onSpeedUpClick(event:MouseEvent):void
 				{
-					SpeedUp = true;
-					TwoBall = false;
+					soeed_up_mode = true;
+					two_ball_mode = false;
 					ball_speed = -10; // speed reset
 					newGame();
 				}
 				function onTwoBallClick(event:MouseEvent):void
 				{
-					TwoBall = true;
-					SpeedUp = false;
+					two_ball_mode = true;
+					soeed_up_mode = false;
 					ball_speed = -10; // speed reset
 					newGame();
 				}
 
 		function onOptionsButtonClick(event:MouseEvent):void   //OPTIONS
 		{
-			if(gameMenu.optionsMenu.visible == false)
+			if(game_menu.optionsMenu.visible == false)
 			{
-				gameMenu.optionsMenu.visible = true;
-				gameMenu.onePlayer.visible = false;
-				gameMenu.twoPlayers.visible = false;
-				gameMenu.normal.visible = false;
-			    gameMenu.speedUp.visible = false;
-			    gameMenu.twoBall.visible = false;
+				game_menu.optionsMenu.visible = true;
+				game_menu.onePlayer.visible = false;
+				game_menu.twoPlayers.visible = false;
+				game_menu.normal.visible = false;
+			    game_menu.speedUp.visible = false;
+			    game_menu.twoBall.visible = false;
 			}
 			else
 			{
-				gameMenu.optionsMenu.visible = false;
+				game_menu.optionsMenu.visible = false;
 				
-				gameMenu.normal.visible = false;
-			    gameMenu.speedUp.visible = false;
-			    gameMenu.twoBall.visible = false;
+				game_menu.normal.visible = false;
+			    game_menu.speedUp.visible = false;
+			    game_menu.twoBall.visible = false;
 			}
 		}
 		    function onMusicChckBoxClick(event:MouseEvent):void
 		    {
 			    if (musicOn == true)
 				    {
-					    gameMenu.optionsMenu.firstCheckBox.gotoAndStop("StateX");
+					    game_menu.optionsMenu.firstCheckBox.gotoAndStop("StateX");
 					    musicOn = false;
 				    }
 			    else
 				    {
-					    gameMenu.optionsMenu.firstCheckBox.gotoAndStop("StateV");
+					    game_menu.optionsMenu.firstCheckBox.gotoAndStop("StateV");
 					    musicOn = true;
 				    }				
 		    }
@@ -251,12 +251,12 @@
 		    {
 			    if (soundsOn == true)
 				    {
-					    gameMenu.optionsMenu.secondCheckBox.gotoAndStop("StateX");
+					    game_menu.optionsMenu.secondCheckBox.gotoAndStop("StateX");
 					    soundsOn = false;
 				    }
 			    else
 				    {
-					    gameMenu.optionsMenu.secondCheckBox.gotoAndStop("StateV");
+					    game_menu.optionsMenu.secondCheckBox.gotoAndStop("StateV");
 					    soundsOn = true;
 				    }				
 		}
@@ -274,31 +274,31 @@
 		}
 		function newGame():void
 		{
-			removeChild(gameMenu);
+			removeChild(game_menu);
 			
 			addEventListener(Event.ENTER_FRAME, frame);
 			
-			backgrnd = new Backgrnd; 
-			addChild(backgrnd);
-			backgrnd.x = 0;
-			backgrnd.y = 0;
+			background_stage = new Background_Stage; 
+			addChild(background_stage);
+			background_stage.x = 0;
+			background_stage.y = 0;
 			
-			left_paddle = new Left_Paddle;
+			left_paddle = new Paddle;
 			addChild(left_paddle);
 			left_paddle.x = 20;
 			left_paddle.y = 200;
 			
-			right_paddle = new Right_Paddle;
+			right_paddle = new Paddle;
 			addChild(right_paddle);
 			right_paddle.x = 530;
 			right_paddle.y = 200;
 			
-			ball = new Ball;
-			addChild(ball);
-			ball.x = 470;
-			ball.y = 200;
+			ball_one = new Ball;
+			addChild(ball_one);
+			ball_one.x = 470;
+			ball_one.y = 200;
 			
-			if (TwoBall == true)
+			if (two_ball_mode == true)
 			{
 				ballTwo = new Ball;
 				addChild(ballTwo);
@@ -306,13 +306,13 @@
 				ballTwo.y = 200;
 			}
 			
-			playerscore = 0;
-			aiscore = 0;
-			backgrnd.PlayerScore.text = String(playerscore);
-			backgrnd.AIScore.text = String(aiscore);
+			left_score = 0;
+			right_score = 0;
+			background_stage.Left_Score.text = String(left_score);
+			background_stage.Right_Score.text = String(right_score);
 			
-			GameStarted = true;
-			InMenu = false;
+			game_start = true;
+			in_menu = false;
 			
 			aiScored();
 			playerScoredTwo();
@@ -327,195 +327,195 @@
 		}
 		function frame(event:Event):void
 		{			
-			if(ball.x >400)
+			if(ball_one.x >400)
 			{
-				stage.focus = backgrnd.PlayerScore;
+				stage.focus = background_stage.Left_Score;
 			}
 			
-			ball.x = ball.x + Math.cos(rads) * ball_speed; 
-			ball.y = ball.y + Math.sin(rads) * ball_speed;
+			ball_one.x = ball_one.x + Math.cos(rads) * ball_speed; 
+			ball_one.y = ball_one.y + Math.sin(rads) * ball_speed;
 			
-			if (TwoBall == true)
+			if (two_ball_mode == true)
 			{
 				ballTwo.x = ballTwo.x + Math.cos(radsTwo) * ball_speed; 
 			    ballTwo.y = ballTwo.y + Math.sin(radsTwo) * ball_speed;
 			}
 				
-			
-			if (ball.x > 550) // AI Score
+			if (ball_one.x > 550) // AI Score
 			{
-				playerscore += +1
-				backgrnd.PlayerScore.text = String(playerscore);
+				left_score += 1
+				background_stage.Left_Score.text = String(left_score);
 				aiScored()
-				if (playerscore > 9)
+				if (left_score > 9)
 				{
-					backgrnd.PlayerScore.width = 40;
-					backgrnd.PlayerScore.x = 210
+					background_stage.Left_Score.width = 40;
+					background_stage.Left_Score.x = 210
 				}
 			}
 			
-			if (TwoBall == true)
+			if (two_ball_mode == true)
 		    {
 			    if (ballTwo.x > 550)
 				{
-				    playerscore += +1
-				    backgrnd.PlayerScore.text = String(playerscore);
+				    left_score += 1
+				    background_stage.Left_Score.text = String(left_score);
 				    aiScoredTwo()
-				    if (playerscore > 9)
+				    if (left_score > 9)
 				    {
-					    backgrnd.PlayerScore.width = 40;
-					    backgrnd.PlayerScore.x = 210
+					    background_stage.Left_Score.width = 40;
+					    background_stage.Left_Score.x = 210
 				    }
 				}
 			}
-				
-			if (ball.x < 0) // Player Score
+
+			if (ball_one.x < 0) // Player Score
 			{
-				aiscore += +1
-				backgrnd.AIScore.text = String(aiscore);
+				right_score += 1
+				background_stage.Right_Score.text = String(right_score);
 				playerScored()
-				if (aiscore >9)
+				if (right_score >9)
 				{
-					backgrnd.AIScore.width = 40;
+					background_stage.Right_Score.width = 40;
 				}
 			}
 			
-			if (TwoBall == true)
+			if (two_ball_mode == true)
 			{
 				if (ballTwo.x < 0) // AI Score
 			    {
-				    aiscore += +1
-				    backgrnd.AIScore.text = String(aiscore);
+				    right_score += 1
+				    background_stage.Right_Score.text = String(right_score);
 				    playerScoredTwo()
-				    if (aiscore >9)
+				    if (right_score >9)
 				    {
-					    backgrnd.AIScore.width = 40;
+					    background_stage.Right_Score.width = 40;
 				    }
 			    }
 			}
 			
-			if (ball.x > 100 && ball.x < 400)
+			// this prevents a bug where the ball bounces inside the racket
+			if (ball_one.x > 100 && ball_one.x < 400)
 			{
-				hitHappens = false;
+				first_ball_hit = false;
 			}
-			if (TwoBall == true)
+			if (two_ball_mode == true)
 			{
 				if (ballTwo.x > 100 && ballTwo.x < 400)
 			    {
-				    hitHappensTwo = false;
+				    second_ball_hit = false;
 			    }
 			}
-			
+
 			//bounce from racket
-			if (left_paddle.hitTestObject(ball) && hitHappens == false )
+			if (left_paddle.hitTestObject(ball_one) && first_ball_hit == false )
 			{
-				angleX = 360 - angle;
-				angle = 180 + angleX;
-				rads = angle * Math.PI  / 180;
-				hitHappens = true;
+				angleX = 360 - first_ball_angle;
+				first_ball_angle = 180 + angleX;
+				rads = first_ball_angle * Math.PI  / 180;
+				first_ball_hit = true;
 				
 				if (soundsOn == true)
 				{
 				    myChannel1 = mySound1.play(0,1);					
 				}
-				if (SpeedUp == true)
+				if (soeed_up_mode == true)
 				{
 					ball_speed = ball_speed - ball_speed_icrease;
 				}
 			}
-			if (TwoBall == true)
+			if (two_ball_mode == true)
 			{
-			    if (left_paddle.hitTestObject(ballTwo) && hitHappensTwo == false )
+			    if (left_paddle.hitTestObject(ballTwo) && second_ball_hit == false )
 			    {
-				    angleXTwo = 360 - angleTwo;
-				    angleTwo = 180 + angleXTwo;
-				    radsTwo = angleTwo * Math.PI  / 180;
-				    hitHappensTwo = true;
+				    angleXTwo = 360 - second_ball_angle;
+				    second_ball_angle = 180 + angleXTwo;
+				    radsTwo = second_ball_angle * Math.PI  / 180;
+				    second_ball_hit = true;
 				
 				    if (soundsOn == true)
 				    {
 				        myChannel1 = mySound1.play(0,1);					
 				    }
-				    if (SpeedUp == true)
+				    if (soeed_up_mode == true)
 				    {
 					    ball_speed = ball_speed - ball_speed_icrease;
 				    }
 			    }
 			}
-			if (right_paddle.hitTestObject(ball) && hitHappens == false )
+			if (right_paddle.hitTestObject(ball_one) && first_ball_hit == false )
 			{
-				angleX = 180 - angle;
-				angle = 0 + angleX;
-				rads = angle * Math.PI  / 180;
-				hitHappens = true;
+				angleX = 180 - first_ball_angle;
+				first_ball_angle = 0 + angleX;
+				rads = first_ball_angle * Math.PI  / 180;
+				first_ball_hit = true;
 				
 				if (soundsOn == true)
 				{
 				    myChannel1 = mySound1.play(0,1);					
 				}
-				if (SpeedUp == true)
+				if (soeed_up_mode == true)
 				{
 					ball_speed = ball_speed - ball_speed_icrease;
 				}
 			}
-			if (TwoBall == true)
+			if (two_ball_mode == true)
 			{
-			    if (right_paddle.hitTestObject(ballTwo) && hitHappensTwo == false )
+			    if (right_paddle.hitTestObject(ballTwo) && second_ball_hit == false )
 			    {
-				    angleXTwo = 180 - angleTwo;
-				    angleTwo = 0 + angleXTwo;
-				    radsTwo = angleTwo * Math.PI  / 180;
-				    hitHappensTwo = true;
+				    angleXTwo = 180 - second_ball_angle;
+				    second_ball_angle = 0 + angleXTwo;
+				    radsTwo = second_ball_angle * Math.PI  / 180;
+				    second_ball_hit = true;
 				
 				    if (soundsOn == true)
 				    {
 				        myChannel1 = mySound1.play(0,1);					
 				    }
-				    if (SpeedUp == true)
+				    if (soeed_up_mode == true)
 				    {
 					    ball_speed = ball_speed - ball_speed_icrease;
 				    }				
 			    }
 			}
 			//bounce from borders
-			if (ball.y <= 0) //top
+			if (ball_one.y <= 0) //top
 			{
 				var angleX:Number; //insignificant name
 				
-				angleX = 360 - angle;
-				angle = 0 + angleX;
-				rads = angle * Math.PI  / 180;
+				angleX = 360 - first_ball_angle;
+				first_ball_angle = 0 + angleX;
+				rads = first_ball_angle * Math.PI  / 180;
 			}
-			if (ball.y >= backgrnd.height) //bottom
+			if (ball_one.y >= background_stage.height) //bottom
 			{
 				var angleY:Number;
 				
-				angleY = angle;
-				angle = 0 - angleY;
-				rads = angle * Math.PI  / 180;
+				angleY = first_ball_angle;
+				first_ball_angle = 0 - angleY;
+				rads = first_ball_angle * Math.PI  / 180;
 			}
-			if (TwoBall == true)
+			if (two_ball_mode == true)
 			{
 			    if (ballTwo.y <= 0) //top
 			    {
 				    var angleXTwo:Number; //insignificant name
 				
-				    angleXTwo = 360 - angleTwo;
-				    angleTwo = 0 + angleXTwo;
-				    radsTwo = angleTwo * Math.PI  / 180;
+				    angleXTwo = 360 - second_ball_angle;
+				    second_ball_angle = 0 + angleXTwo;
+				    radsTwo = second_ball_angle * Math.PI  / 180;
 			    }
-			    if (ballTwo.y >= backgrnd.height) //bottom
+			    if (ballTwo.y >= background_stage.height) //bottom
 			    {
 				    var angleYTwo:Number;
 				
-				    angleYTwo = angleTwo;
-				    angleTwo = 0 - angleYTwo;
-				    radsTwo = angleTwo * Math.PI  / 180;
+				    angleYTwo = second_ball_angle;
+				    second_ball_angle = 0 - angleYTwo;
+				    radsTwo = second_ball_angle * Math.PI  / 180;
 			    }
 			}
 			
-			left_paddle.y += controlspeedP;
-		    right_paddle.y += controlspeedA;
+			left_paddle.y += paddle_movement_left;
+		    right_paddle.y += paddle_movement_right;
 			
 				//top border
 				if (left_paddle.y < 20)
@@ -542,59 +542,59 @@
 		{
 			if(event.keyCode == Keyboard.W)
 			{
-				controlspeedP = 0;
+				paddle_movement_left = 0;
 			}
 			if(event.keyCode == Keyboard.S)
 			{
-				controlspeedP = 0;
+				paddle_movement_left = 0;
 			}
 			if(event.keyCode == Keyboard.UP)
 			{
-				controlspeedA = 0;
+				paddle_movement_right = 0;
 			}
 			if(event.keyCode == Keyboard.DOWN)
 			{
-				controlspeedA = 0;
+				paddle_movement_right = 0;
 			}
 		}
 		function onKeyPressDown(event:KeyboardEvent):void 
 		{
 			if(event.keyCode == Keyboard.W) //player moves up
 			{
-				controlspeedP = -paddle_speed;
+				paddle_movement_left = -paddle_speed;
 				//left_paddle.y += -paddle_speed
 			}
 			if(event.keyCode == Keyboard.S) //player moves down
 			{
-				controlspeedP = paddle_speed;
+				paddle_movement_left = paddle_speed;
 				//left_paddle.y += +paddle_speed
 			}
 			if(event.keyCode == Keyboard.UP) //player moves up
 			{
-				controlspeedA = -paddle_speed;
+				paddle_movement_right = -paddle_speed;
 				//right_paddle.y += -paddle_speed
 			}
 			if(event.keyCode == Keyboard.DOWN) //player moves down
 			{
-				controlspeedA = paddle_speed;
+				paddle_movement_right = paddle_speed;
 				//right_paddle.y += +paddle_speed
 			}
 			if(event.keyCode == Keyboard.ESCAPE)
 			{			
-			    if (InMenu == false)
+			    if (in_menu == false)
 				{
 					removeEventListener(Event.ENTER_FRAME, frame);
 				
 				    menu();
-					InMenu = true;
+					in_menu = true;
 			    }
 				else
 				{
-					removeChild(gameMenu)
+					removeChild(game_menu)
 				
 				    addEventListener(Event.ENTER_FRAME, frame);
 				    stage.focus = this;
-					InMenu = false;
+					in_menu = false;
 					
 				    if (musicOn == true)
 			        {
@@ -605,29 +605,29 @@
 		}
 		function aiScored():void //ball reset from AI to Player   //Quadrant 2 and 3 (BL & TL)
 		{
-			ball.x = 470;
-			ball.y = 200;
+			ball_one.x = 470;
+			ball_one.y = 200;
 			
 			var num = Math.round(Math.random()* 1 + 0);
 			if (num == 0)
 			{
-				angle = Math.round(Math.random()* 60 + 285);  //Q4 
+				first_ball_angle = Math.round(Math.random()* 60 + 285);  //Q4 
 			}
 			else 
 			{
-				angle = Math.round(Math.random()* 60 + 15);  //Q1
+				first_ball_angle = Math.round(Math.random()* 60 + 15);  //Q1
 			}
 			
-			rads = angle * Math.PI  / 180;
+			rads = first_ball_angle * Math.PI  / 180;
 			
-			if (SpeedUp == true)
+			if (soeed_up_mode == true)
 			{
 				ball_speed = -10
 			}
 		}
 		function aiScoredTwo():void
 		{
-		    if (TwoBall == true)  //TwoBall
+		    if (two_ball_mode == true)  //two_ball_mode
 			{
 			    ballTwo.x = 470;
 			    ballTwo.y = 200;
@@ -635,46 +635,46 @@
 			    var numTwo = Math.round(Math.random()* 1 + 0);
 			    if (numTwo == 0)
 			    {
-				    angleTwo = Math.round(Math.random()* 60 + 285);  //Q4 
+				    second_ball_angle = Math.round(Math.random()* 60 + 285);  //Q4 
 			    }
 			    else 
 			    {
-				    angleTwo = Math.round(Math.random()* 60 + 15);  //Q1
+				    second_ball_angle = Math.round(Math.random()* 60 + 15);  //Q1
 			    }
 			
-			    radsTwo = angleTwo * Math.PI  / 180;
+			    radsTwo = second_ball_angle * Math.PI  / 180;
 			 }
 			 
-			 if (SpeedUp == true)
+			 if (soeed_up_mode == true)
 			 {
 				 ball_speed = -10
 			 }
 		}
 		function playerScored():void //ball reset from Player to AI     //Q 1 & 4 (BR & TR)
 		{
-			ball.x = 80;
-			ball.y = 200;
+			ball_one.x = 80;
+			ball_one.y = 200;
 			
 			var num = Math.round(Math.random()* 1 + 0);
 			if (num == 0)
 			{
-				angle = Math.round(Math.random()* 60 + 195);  //Q3
+				first_ball_angle = Math.round(Math.random()* 60 + 195);  //Q3
 			}
 			else 
 			{
-				angle = Math.round(Math.random()* 60 + 105);  //Q2
+				first_ball_angle = Math.round(Math.random()* 60 + 105);  //Q2
 			}
 			
-			rads = angle * Math.PI  / 180;
+			rads = first_ball_angle * Math.PI  / 180;
 			
-			if (SpeedUp == true)
+			if (soeed_up_mode == true)
 			{
 				ball_speed = -10
 			}
 		}
 		function playerScoredTwo():void
 		{
-			if (TwoBall == true) //TwoBall
+			if (two_ball_mode == true) //two_ball_mode
 			{
 			    ballTwo.x = 80;
 			    ballTwo.y = 200;
@@ -682,16 +682,16 @@
 			    var numTwo = Math.round(Math.random()* 1 + 0);
 			    if (numTwo == 0)
 			    {
-				    angleTwo = Math.round(Math.random()* 60 + 195);  //Q3
+				    second_ball_angle = Math.round(Math.random()* 60 + 195);  //Q3
 			    }
 			    else 
 			    {
-				    angleTwo = Math.round(Math.random()* 60 + 105);  //Q2
+				    second_ball_angle = Math.round(Math.random()* 60 + 105);  //Q2
 			    }
 			
-			    radsTwo = angleTwo * Math.PI  / 180;
+			    radsTwo = second_ball_angle * Math.PI  / 180;
 				
-				if (SpeedUp == true)
+				if (soeed_up_mode == true)
 			    {
 				    ball_speed = -10
 			    }
