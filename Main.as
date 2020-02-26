@@ -326,7 +326,7 @@
 			in_menu = false;
 			
 			right_scored_one();
-			playerScoredTwo();
+			left_scored_two();
 			
 			stage.focus = this;
 			
@@ -384,7 +384,7 @@
 			{
 				score_right += 1
 				game_field.Score_Right.text = String(score_right);
-				playerScored()
+				left_scored_one()
 				if (score_right >9)
 				{
 					game_field.Score_Right.width = 40;
@@ -397,7 +397,7 @@
 			    {
 				    score_right += 1
 				    game_field.Score_Right.text = String(score_right);
-				    playerScoredTwo()
+				    left_scored_two()
 				    if (score_right >9)
 				    {
 					    game_field.Score_Right.width = 40;
@@ -632,11 +632,11 @@
 			var num = Math.round(Math.random()* 1 + 0);
 			if (num == 0)
 			{
-				ball_one_angle = Math.round(Math.random()* 60 + 285);  //Q4 
+				ball_one_angle = Math.round(Math.random()* 60 + 195);  //Q3 
 			}
 			else 
 			{
-				ball_one_angle = Math.round(Math.random()* 60 + 15);  //Q1
+				ball_one_angle = Math.round(Math.random()* 60 + 105);  //Q2
 			}
 			
 			ball_one_rads = ball_one_angle * Math.PI  / 180;
@@ -657,11 +657,11 @@
 			    var numTwo = Math.round(Math.random()* 1 + 0);
 			    if (numTwo == 0)
 			    {
-				    ball_two_angle = Math.round(Math.random()* 60 + 285);  //Q4 
+				    ball_two_angle = Math.round(Math.random()* 60 + 195);  //Q3  
 			    }
 			    else 
 			    {
-				    ball_two_angle = Math.round(Math.random()* 60 + 15);  //Q1
+				    ball_two_angle = Math.round(Math.random()* 60 + 105);  //Q2
 			    }
 			
 			    ball_two_rads = ball_two_angle * Math.PI  / 180;
@@ -673,7 +673,7 @@
 			 }
 		}
 		
-		function playerScored():void //ball reset from Left to Right     //Q 1 & 4 (BR & TR)
+		function left_scored_one():void //ball reset from Left to Right     //Q 1 & 4 (BR & TR)
 		{
 			ball_one.x = 80;
 			ball_one.y = 200;
@@ -681,11 +681,11 @@
 			var num = Math.round(Math.random()* 1 + 0);
 			if (num == 0)
 			{
-				ball_one_angle = Math.round(Math.random()* 60 + 195);  //Q3
+				ball_one_angle = Math.round(Math.random()* 60 + 285);  //Q4
 			}
 			else 
 			{
-				ball_one_angle = Math.round(Math.random()* 60 + 105);  //Q2
+				ball_one_angle = Math.round(Math.random()* 60 + 15);  //Q1
 			}
 			
 			ball_one_rads = ball_one_angle * Math.PI  / 180;
@@ -696,7 +696,7 @@
 			}
 		}
 		
-		function playerScoredTwo():void
+		function left_scored_two():void
 		{
 			if (two_ball_mode == true) //two_ball_mode
 			{
@@ -706,11 +706,11 @@
 			    var numTwo = Math.round(Math.random()* 1 + 0);
 			    if (numTwo == 0)
 			    {
-				    ball_two_angle = Math.round(Math.random()* 60 + 195);  //Q3
+				    ball_two_angle = Math.round(Math.random()* 60 + 285);  //Q4
 			    }
 			    else 
 			    {
-				    ball_two_angle = Math.round(Math.random()* 60 + 105);  //Q2
+				    ball_two_angle = Math.round(Math.random()* 60 + 15);  //Q1
 			    }
 			
 			    ball_two_rads = ball_two_angle * Math.PI  / 180;
