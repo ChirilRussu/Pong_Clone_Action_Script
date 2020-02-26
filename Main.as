@@ -199,7 +199,6 @@
 		{
 			two_ball_mode = false;
 			speed_up_mode = false;
-			ball_speed = ball_speed_reset; // speed reset
 			newGame();
 		}
 				
@@ -207,7 +206,6 @@
 		{
 			speed_up_mode = true;
 			two_ball_mode = false;
-			ball_speed = ball_speed_reset; // speed reset
 			newGame();
 		}
 			
@@ -215,7 +213,6 @@
 		{
 			two_ball_mode = true;
 			speed_up_mode = false;
-			ball_speed = ball_speed_reset; // speed reset
 			newGame();
 		}
 
@@ -316,6 +313,8 @@
 				ball_two.x = 80;
 				ball_two.y = 200;
 			}
+			
+			ball_speed = ball_speed_reset; // speed reset
 			
 			score_left = 0;
 			score_right = 0;
