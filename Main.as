@@ -431,7 +431,7 @@
 				}
 				if (speed_up_mode == true)
 				{
-					ball_speed = ball_speed - ball_speed_icrease;
+					ball_speed = ball_speed + ball_speed_icrease;
 				}
 			}
 			
@@ -450,7 +450,7 @@
 				    }
 				    if (speed_up_mode == true)
 				    {
-					    ball_speed = ball_speed - ball_speed_icrease;
+					    ball_speed = ball_speed + ball_speed_icrease;
 				    }
 			    }
 			}
@@ -468,7 +468,7 @@
 				}
 				if (speed_up_mode == true)
 				{
-					ball_speed = ball_speed - ball_speed_icrease;
+					ball_speed = ball_speed + ball_speed_icrease;
 				}
 			}
 			
@@ -487,7 +487,7 @@
 				    }
 				    if (speed_up_mode == true)
 				    {
-					    ball_speed = ball_speed - ball_speed_icrease;
+					    ball_speed = ball_speed + ball_speed_icrease;
 				    }				
 			    }
 			}
