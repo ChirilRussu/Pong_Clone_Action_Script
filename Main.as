@@ -318,8 +318,9 @@
 			
 			score_left = 0;
 			score_right = 0;
-			game_field.Score_Left.text = String(score_left);
-			game_field.Score_Right.text = String(score_right);
+			//game_field.Score_Left.text = String(score_left);
+			//game_field.Score_Right.text = String(score_right);
+			// happens under frame as well.
 			
 			game_start = true;
 			in_menu = false;
@@ -623,7 +624,7 @@
 		    }
 		}
 		
-		function right_scored_one():void //ball reset from Right to Left   //Quadrant 2 and 3 (BL & TL)
+		function right_scored_one():void //ball reset from Right to Left   //Quadrant 2 and 3 (Top Left & Bottom Left)
 		{
 			ball_one.x = 470;
 			ball_one.y = 200;
@@ -672,7 +673,7 @@
 			 }
 		}
 		
-		function left_scored_one():void //ball reset from Left to Right     //Q 1 & 4 (BR & TR)
+		function left_scored_one():void // ball reset from Left to Right     //Q 1 & 4 (Top Rright & Bottom Right)
 		{
 			ball_one.x = 80;
 			ball_one.y = 200;
