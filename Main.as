@@ -14,7 +14,7 @@
 	public class Main extends MovieClip 
 	{
 		//changeable variables
-		var ball_speed_reset:int = 10;
+		var ball_speed_reset:int = 10;			// initial and reset value
 		var paddle_speed:int = 10;
 		var ball_speed_icrease:int = 3;
 		
@@ -30,7 +30,7 @@
 		var ball_speed:int;
 		var score_left:int = 0;
 		var score_right:int = 0;
-		var paddle_movement_left:int = 0; 		// used to store and overwrite paddle_speed without losing its value
+		var paddle_movement_left:int = 0; 		// used to store and delete the value of paddle_speed without losing it
 		var paddle_movement_right:int = 0;
 		var ball_one_angle:int;				
 		var ball_two_angle:int;
@@ -64,8 +64,8 @@
 			sound_hit.load(new URLRequest("phaserUp6.mp3"));
 		}
 		
-		function menu():void //Menu Call
-		{			
+		function menu():void // Menu Call
+		{
 			game_menu = new Game_Menu;
 			addChild(game_menu);
 			game_menu.x = 0;
@@ -80,12 +80,18 @@
 			game_menu.options_menu.checkbox_music.addEventListener(MouseEvent.CLICK,on_music_checkbox_click);
 			game_menu.options_menu.checkbox_sound.addEventListener(MouseEvent.CLICK,on_sound_checkbox_click);
 			
+			// these objects are being hidden because they are not created dynamically and are visible by default
 			game_menu.options_menu.visible = false;
 			game_menu.one_player.visible = false;
 			game_menu.two_players.visible = false;
 			game_menu.two_players_normal.visible = false;
 			game_menu.two_players_speed_up.visible = false;
 			game_menu.two_players_two_ball.visible = false;
+			
+			game_menu.red_ball_one.visible = false;
+			game_menu.red_ball_two.visible = false;
+			game_menu.red_paddle_left.visible = false;
+			game_menu.red_paddle_right.visible = false;
 			
 			if (music_on == true)
 			{
@@ -103,11 +109,7 @@
 			{
 				game_menu.options_menu.checkbox_sound.gotoAndStop("StateX");
 			}
-			
-			game_menu.red_ball_one.visible = false;
-			game_menu.red_ball_two.visible = false;
-			game_menu.red_paddle_left.visible = false;
-			game_menu.red_paddle_right.visible = false;
+						
 			if (game_start == true)
 			{
 				game_menu.red_ball_one.visible = true
@@ -314,7 +316,7 @@
 				ball_two.y = 200;
 			}
 			
-			ball_speed = ball_speed_reset; // speed reset
+			ball_speed = ball_speed_reset; // so ball speed from the speed up mode doesn't transfer 
 			
 			score_left = 0;
 			score_right = 0;
