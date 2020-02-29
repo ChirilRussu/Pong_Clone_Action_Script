@@ -323,15 +323,12 @@
 			
 			score_left = 0;
 			score_right = 0;
-			//game_field.Score_Left.text = String(score_left);
-			//game_field.Score_Right.text = String(score_right);
-			// happens under frame as well.
 			
 			game_start = true;
 			in_menu = false;
 			
-			right_scored_one();
-			left_scored_two();
+			ball_one_reset_to_right();
+			ball_two_reset_to_left();
 			
 			stage.focus = this;
 			
@@ -362,7 +359,7 @@
 			{
 				score_left += 1
 				game_field.Score_Left.text = String(score_left);
-				right_scored_one()
+				ball_one_reset_to_right()
 				if (score_left > 9)
 				{
 					game_field.Score_Left.width = 40;
@@ -376,7 +373,7 @@
 				{
 				    score_left += 1
 				    game_field.Score_Left.text = String(score_left);
-				    right_scored_two()
+				    ball_two_reset_to_right()
 				    if (score_left > 9)
 				    {
 					    game_field.Score_Left.width = 40;
@@ -389,7 +386,7 @@
 			{
 				score_right += 1
 				game_field.Score_Right.text = String(score_right);
-				left_scored_one()
+				ball_one_reset_to_left()
 				if (score_right >9)
 				{
 					game_field.Score_Right.width = 40;
@@ -402,7 +399,7 @@
 			    {
 				    score_right += 1
 				    game_field.Score_Right.text = String(score_right);
-				    left_scored_two()
+				    ball_two_reset_to_left()
 				    if (score_right >9)
 				    {
 					    game_field.Score_Right.width = 40;
@@ -585,6 +582,7 @@
 		
 		function on_key_press_down(event:KeyboardEvent):void 
 		{
+		
 			if(event.keyCode == Keyboard.W) //left paddle moves up
 			{
 				paddle_movement_left = -paddle_speed;
@@ -638,7 +636,8 @@
 		    }
 		}
 		
-		function right_scored_one():void // ball reset from Right to Left   //Quadrant 2 and 3 (Top Left & Bottom Left)
+		// ball reset from Left to Right
+		function ball_one_reset_to_right():void //Quadrant 1 & 4 (Top Rright & Bottom Right)
 		{
 			ball_one.x = 470;
 			ball_one.y = 200;
@@ -646,11 +645,11 @@
 			var num = Math.round(Math.random()* 1 + 0);
 			if (num == 0)
 			{
-				ball_one_angle = Math.round(Math.random()* 60 + 195);  //Q3 
+				ball_one_angle = Math.round(Math.random()* 60 + 195);  //Q4 
 			}
 			else 
 			{
-				ball_one_angle = Math.round(Math.random()* 60 + 105);  //Q2
+				ball_one_angle = Math.round(Math.random()* 60 + 105);  //Q1
 			}
 			
 			ball_one_rads = ball_one_angle * Math.PI  / 180;
@@ -661,7 +660,7 @@
 			}
 		}
 		
-		function right_scored_two():void
+		function ball_two_reset_to_right():void
 		{
 		    if (two_ball_mode == true)  //two_ball_mode
 			{
@@ -671,11 +670,11 @@
 			    var numTwo = Math.round(Math.random()* 1 + 0);
 			    if (numTwo == 0)
 			    {
-				    ball_two_angle = Math.round(Math.random()* 60 + 195);  //Q3  
+				    ball_two_angle = Math.round(Math.random()* 60 + 195);  //Q4
 			    }
 			    else 
 			    {
-				    ball_two_angle = Math.round(Math.random()* 60 + 105);  //Q2
+				    ball_two_angle = Math.round(Math.random()* 60 + 105);  //Q1
 			    }
 			
 			    ball_two_rads = ball_two_angle * Math.PI  / 180;
@@ -687,7 +686,8 @@
 			 }
 		}
 		
-		function left_scored_one():void // ball reset from Left to Right     //Q 1 & 4 (Top Rright & Bottom Right)
+		// ball reset from Right to Left
+		function ball_one_reset_to_left():void //Quadrant 2 and 3 (Top Left & Bottom Left)
 		{
 			ball_one.x = 80;
 			ball_one.y = 200;
@@ -695,11 +695,11 @@
 			var num = Math.round(Math.random()* 1 + 0);
 			if (num == 0)
 			{
-				ball_one_angle = Math.round(Math.random()* 60 + 285);  //Q4
+				ball_one_angle = Math.round(Math.random()* 60 + 285);  //Q3
 			}
 			else 
 			{
-				ball_one_angle = Math.round(Math.random()* 60 + 15);  //Q1
+				ball_one_angle = Math.round(Math.random()* 60 + 15);  //Q2
 			}
 			
 			ball_one_rads = ball_one_angle * Math.PI  / 180;
@@ -710,7 +710,7 @@
 			}
 		}
 		
-		function left_scored_two():void
+		function ball_two_reset_to_left():void
 		{
 			if (two_ball_mode == true) //two_ball_mode
 			{
@@ -720,11 +720,11 @@
 			    var numTwo = Math.round(Math.random()* 1 + 0);
 			    if (numTwo == 0)
 			    {
-				    ball_two_angle = Math.round(Math.random()* 60 + 285);  //Q4
+				    ball_two_angle = Math.round(Math.random()* 60 + 285);  //Q3
 			    }
 			    else 
 			    {
-				    ball_two_angle = Math.round(Math.random()* 60 + 15);  //Q1
+				    ball_two_angle = Math.round(Math.random()* 60 + 15);  //Q2
 			    }
 			
 			    ball_two_rads = ball_two_angle * Math.PI  / 180;
