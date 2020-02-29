@@ -60,8 +60,9 @@
 			// general key press listeners
 			stage.addEventListener(KeyboardEvent.KEY_DOWN,onKeyPressDown);
 			stage.addEventListener(KeyboardEvent.KEY_UP,onKeyPressUp);
-			sound_music.load(new URLRequest("Journey(144kbps).mp3"));
-			sound_hit.load(new URLRequest("phaserUp6.mp3"));
+			sound_music.load(new URLRequest("Sound/Journey(144kbps).mp3"));
+			sound_hit.load(new URLRequest("Sound/phaserUp6.mp3"));
+		
 		}
 		
 		function menu():void // Menu Call
