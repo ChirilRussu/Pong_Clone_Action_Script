@@ -201,21 +201,21 @@
 		{
 			two_ball_mode = false;
 			speed_up_mode = false;
-			newGame();
+			new_game();
 		}
 				
 		function on_two_players_speed_up_click(event:MouseEvent):void
 		{
 			speed_up_mode = true;
 			two_ball_mode = false;
-			newGame();
+			new_game();
 		}
 			
 		function on_two_players_two_ball_click(event:MouseEvent):void
 		{
 			two_ball_mode = true;
 			speed_up_mode = false;
-			newGame();
+			new_game();
 		}
 
 		function on_button_options_click(event:MouseEvent):void   //OPTIONS
@@ -283,7 +283,7 @@
 		}
 		
 		// In game functions
-		function newGame():void
+		function new_game():void
 		{
 			removeChild(game_menu);
 			
