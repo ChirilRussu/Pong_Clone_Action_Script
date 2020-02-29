@@ -62,7 +62,7 @@
 		}
 		
 		// Menu functions
-		function menu():void // Menu Call
+		function menu():void
 		{
 			game_menu = new Game_Menu;
 			addChild(game_menu);
