@@ -13,12 +13,12 @@
 	
 	public class Main extends MovieClip 
 	{
-		//changeable variables
+		// changeable variables
 		var ball_speed_reset:int = 10;			// initial and reset value
 		var paddle_speed:int = 10;
 		var ball_speed_icrease:int = 3;
 		
-		//objects
+		// objects
 		var game_field:Game_Field;
 		var game_menu:Game_Menu;
 		var left_paddle:Paddle;
@@ -26,7 +26,7 @@
 		var ball_one:Ball;
 		var ball_two:Ball;
 		
-		//storing variables
+		// general variables
 		var ball_speed:int;
 		var score_left:int = 0;
 		var score_right:int = 0;
@@ -43,13 +43,13 @@
 		var speed_up_mode:Boolean;
 		var two_ball_mode:Boolean;
 		
-		//sounds:
-		//music
+		// sounds:
+		// music
 		var sound_music:Sound = new Sound();
 		var music_channel:SoundChannel = new SoundChannel();
 		var music_position:Number = 0;
 		var music_on:Boolean = true;
-		//collision effect
+		// collision effect
 		var sound_hit:Sound = new Sound();
 		var sound_channel:SoundChannel = new SoundChannel();
 		var sound_on:Boolean = true;
@@ -57,14 +57,12 @@
 		public function Main() 
 		{
 			menu();
-			// general key press listeners
-			stage.addEventListener(KeyboardEvent.KEY_DOWN,onKeyPressDown);
-			stage.addEventListener(KeyboardEvent.KEY_UP,onKeyPressUp);
 			sound_music.load(new URLRequest("Sound/Journey(144kbps).mp3"));
 			sound_hit.load(new URLRequest("Sound/phaserUp6.mp3"));
 		
 		}
 		
+		// Menu functions
 		function menu():void // Menu Call
 		{
 			game_menu = new Game_Menu;
@@ -110,7 +108,8 @@
 			{
 				game_menu.options_menu.checkbox_sound.gotoAndStop("StateX");
 			}
-						
+			
+			// pause functionality
 			if (game_start == true)
 			{
 				game_menu.red_ball_one.visible = true
@@ -283,12 +282,15 @@
 			fscommand("quit");
 		}
 		
+		// In game functions
 		function newGame():void
 		{
 			removeChild(game_menu);
 			
 			addEventListener(Event.ENTER_FRAME, frame);
-			
+			stage.addEventListener(KeyboardEvent.KEY_DOWN,on_key_press_down);
+			stage.addEventListener(KeyboardEvent.KEY_UP,on_key_press_up);
+				
 			game_field = new Game_Field; 
 			addChild(game_field);
 			game_field.x = 0;
@@ -560,7 +562,7 @@
 			}
 		}
 		
-		function onKeyPressUp(event:KeyboardEvent):void 
+		function on_key_press_up(event:KeyboardEvent):void 
 		{
 			if(event.keyCode == Keyboard.W)
 			{
@@ -580,7 +582,7 @@
 			}
 		}
 		
-		function onKeyPressDown(event:KeyboardEvent):void 
+		function on_key_press_down(event:KeyboardEvent):void 
 		{
 			if(event.keyCode == Keyboard.W) //player moves up
 			{
@@ -627,7 +629,7 @@
 		    }
 		}
 		
-		function right_scored_one():void //ball reset from Right to Left   //Quadrant 2 and 3 (Top Left & Bottom Left)
+		function right_scored_one():void // ball reset from Right to Left   //Quadrant 2 and 3 (Top Left & Bottom Left)
 		{
 			ball_one.x = 470;
 			ball_one.y = 200;
