@@ -59,7 +59,6 @@
 			menu();
 			sound_music.load(new URLRequest("Sound/Journey(144kbps).mp3"));
 			sound_hit.load(new URLRequest("Sound/phaserUp6.mp3"));
-		
 		}
 		
 		// Menu functions
@@ -127,12 +126,7 @@
 					game_menu.red_ball_two.x = ball_two.x
 				    game_menu.red_ball_two.y = ball_two.y
 				}
-			}
-			if (music_on == true)
-			{
-			    music_position = music_channel.position;
-			    music_channel.stop();
-			}
+			}		
 		}
 		
 		function on_button_resume_click(event:MouseEvent):void  //RESUME
@@ -159,6 +153,9 @@
 				game_menu.one_player.visible = true;
 				game_menu.two_players.visible = true;
 				game_menu.options_menu.visible = false;
+				
+				game_menu.one_player.addEventListener(MouseEvent.CLICK,on_one_player_click);
+				game_menu.two_players.addEventListener(MouseEvent.CLICK,on_two_players_click);
 			}
 			else
 			{
@@ -168,9 +165,11 @@
 				game_menu.two_players_normal.visible = false;      
 			    game_menu.two_players_speed_up.visible = false;
 			    game_menu.two_players_two_ball.visible = false;
+				
+				//game_menu.one_player.removeEventListener(MouseEvent.CLICK,on_one_player_click);
+				//game_menu.two_players.removeEventListener(MouseEvent.CLICK,on_two_players_click);
 			}
-			game_menu.one_player.addEventListener(MouseEvent.CLICK,on_one_player_click);
-			game_menu.two_players.addEventListener(MouseEvent.CLICK,on_two_players_click);
+			
 		}
 		
 		function on_one_player_click(event:MouseEvent):void
@@ -283,6 +282,7 @@
 		}
 		
 		// In game functions
+		// memory leak somewhere when starting a new game over and over
 		function new_game():void
 		{
 			removeChild(game_menu);
@@ -537,6 +537,7 @@
 			    }
 			}
 			
+			// moves the paddles if w/s/up/down are pressed down, if pressed up adds 0s
 			left_paddle.y += paddle_movement_left;
 		    right_paddle.y += paddle_movement_right;
 			
@@ -584,22 +585,22 @@
 		
 		function on_key_press_down(event:KeyboardEvent):void 
 		{
-			if(event.keyCode == Keyboard.W) //player moves up
+			if(event.keyCode == Keyboard.W) //left paddle moves up
 			{
 				paddle_movement_left = -paddle_speed;
 				//left_paddle.y += -paddle_speed
 			}
-			if(event.keyCode == Keyboard.S) //player moves down
+			if(event.keyCode == Keyboard.S) //left paddle  moves down
 			{
 				paddle_movement_left = paddle_speed;
 				//left_paddle.y += +paddle_speed
 			}
-			if(event.keyCode == Keyboard.UP) //player moves up
+			if(event.keyCode == Keyboard.UP) //right paddle moves up
 			{
 				paddle_movement_right = -paddle_speed;
 				//right_paddle.y += -paddle_speed
 			}
-			if(event.keyCode == Keyboard.DOWN) //player moves down
+			if(event.keyCode == Keyboard.DOWN) //right paddle moves down
 			{
 				paddle_movement_right = paddle_speed;
 				//right_paddle.y += +paddle_speed
@@ -608,10 +609,18 @@
 			{			
 			    if (in_menu == false)
 				{
+				
+					menu();
+					
+					in_menu = true;
+					
 					removeEventListener(Event.ENTER_FRAME, frame);
 				
-				    menu();
-					in_menu = true;
+					if (music_on == true)
+					{
+						music_position = music_channel.position;
+						music_channel.stop();
+					}
 			    }
 				else
 				{
