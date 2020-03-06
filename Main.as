@@ -38,7 +38,7 @@
 		var ball_two_rads:Number;
 		var ball_one_hit:Boolean;				// flags
 		var ball_two_hit:Boolean;
-		var game_start:Boolean;
+		var game_going:Boolean;
 		var in_menu:Boolean;
 		var speed_up_mode:Boolean;
 		var two_ball_mode:Boolean;
@@ -108,8 +108,8 @@
 				game_menu.options_menu.checkbox_sound.gotoAndStop("StateX");
 			}
 			
-			// pause functionality
-			if (game_start == true)
+			// for pause functionality
+			if (game_going == true)
 			{
 				game_menu.red_ball_one.visible = true
 			    game_menu.red_ball_one.x = ball_one.x
@@ -131,7 +131,7 @@
 		
 		function on_button_resume_click(event:MouseEvent):void  //RESUME
 		{
-			if (game_start == true)
+			if (game_going == true)
 			{
 				removeChild(game_menu)
 				
@@ -282,10 +282,45 @@
 		}
 		
 		// In game functions
-		// memory leak somewhere when starting a new game over and over
 		function new_game():void
-		{
+		{	
+			// destructor
+			if (game_going == true)
+			{
+				if (stage.contains(left_paddle))
+				{
+					removeChild(left_paddle);
+					left_paddle = null;
+				}
+				
+				if (stage.contains(right_paddle))
+				{
+					removeChild(right_paddle);
+					right_paddle = null;
+				}
+				
+				if (stage.contains(ball_one))
+				{
+					removeChild(ball_one);
+					ball_one = null;
+				}
+
+				if (stage.contains(ball_two))
+				{
+					removeChild(ball_two);
+					ball_two = null;
+				}
+
+				if (stage.contains(game_field))
+				{
+					removeChild(game_field);
+					game_field = null;
+				}				
+			}
+			
 			removeChild(game_menu);
+			game_menu = null;
+			in_menu = false;
 			
 			addEventListener(Event.ENTER_FRAME, frame);
 			stage.addEventListener(KeyboardEvent.KEY_DOWN,on_key_press_down);
@@ -311,9 +346,9 @@
 			ball_one.x = 470;
 			ball_one.y = 200;
 			
+			ball_two = new Ball;
 			if (two_ball_mode == true)
 			{
-				ball_two = new Ball;
 				addChild(ball_two);
 				ball_two.x = 80;
 				ball_two.y = 200;
@@ -323,9 +358,6 @@
 			
 			score_left = 0;
 			score_right = 0;
-			
-			game_start = true;
-			in_menu = false;
 			
 			ball_one_reset_to_right();
 			ball_two_reset_to_left();
@@ -337,6 +369,8 @@
 			    var music_position:Number = 0;
 			    music_channel = sound_music.play(music_position,9999);
 			}
+			
+			game_going = true;
 		}
 		
 		function frame(event:Event):void
@@ -659,10 +693,10 @@
 				ball_speed = ball_speed_reset
 			}
 		}
-		
+			
 		function ball_two_reset_to_right():void
 		{
-		    if (two_ball_mode == true)  //two_ball_mode
+		    if (two_ball_mode == true)
 			{
 			    ball_two.x = 470;
 			    ball_two.y = 200;
@@ -685,7 +719,7 @@
 				 ball_speed = ball_speed_reset
 			 }
 		}
-		
+					
 		// ball reset from Right to Left
 		function ball_one_reset_to_left():void //Quadrant 2 and 3 (Top Left & Bottom Left)
 		{
@@ -712,7 +746,7 @@
 		
 		function ball_two_reset_to_left():void
 		{
-			if (two_ball_mode == true) //two_ball_mode
+			if (two_ball_mode == true)
 			{
 			    ball_two.x = 80;
 			    ball_two.y = 200;

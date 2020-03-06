@@ -1,2 +1,0 @@
-memory leak in new game
-reduce the frame function as much as possible
