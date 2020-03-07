@@ -693,7 +693,7 @@
 				ball_speed = ball_speed_reset
 			}
 		}
-			
+		
 		function ball_two_reset_to_right():void
 		{
 		    if (two_ball_mode == true)
@@ -719,7 +719,7 @@
 				 ball_speed = ball_speed_reset
 			 }
 		}
-					
+		
 		// ball reset from Right to Left
 		function ball_one_reset_to_left():void //Quadrant 2 and 3 (Top Left & Bottom Left)
 		{

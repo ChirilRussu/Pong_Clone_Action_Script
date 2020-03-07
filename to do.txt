@@ -1,0 +1,10 @@
+reduce the frame function as much as possible
+
+consolidate:
+4 ball reset functions into one
+create a scoring functions that calls the ball reset function
+racket bounce functions
+border bounce functions
+
+stage focus every frame? 
+put double ifs together
